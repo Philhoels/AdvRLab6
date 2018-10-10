@@ -1,14 +1,14 @@
 #' @title
 #' greedy_knapsack
-#' @description greedy_knapsack function
+#' @description greedy_knapsack function to solve the knapsack problem
 #' @name
 #' greedy_knapsack
 #'
-#' @param x , is the input 
-#' @param W , is the 
+#' @param x , is the input weight
+#' @param W , is the input value 
 #'
 #'
-#' @return list , returns a list
+#' @return list , returns a list that contain the maximum value and the list of elements chosen
 #' @export
 
 greedy_knapsack <- function(x,W)
