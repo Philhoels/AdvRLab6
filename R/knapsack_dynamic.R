@@ -52,26 +52,24 @@
 # Run m(n,W)
 
 #-------------------------------------- Pseudo code transformed to R for the dynamic program:
-"
-for (j in 0:W) {
-  m[0,j] <- 0
-}
+# for (j in 0:W) {
+#   m[0,j] <- 0
+# }
+#
+# for (i in 1:n) {
+#   for (j in 0:W) {
+#     if(w[i] > j){
+#       m[i,j] <- m[i-1,j]
+#     } else{
+#       m[i,j] <- max(m[i-1,j], m[i-1,j-w[[i]]] + v[i])
+#     }
+#   }
+# }
+#
+#
+# # The function - knapsack_dynamic(x, W)
+# knapsack_dynamic <- function(x, W){
+#
+# }
 
-for (i in 1:n) {
-  for (j in 0:W) {
-    if(w[i] > j){
-      m[i,j] <- m[i-1,j]
-    } else{
-      m[i,j] <- max(m[i-1,j], m[i-1,j-w[[i]]] + v[i])
-    }
-  }
-}
-
-
-# The function - knapsack_dynamic(x, W)
-knapsack_dynamic <- function(x, W){
-
-}
-
-"
 
