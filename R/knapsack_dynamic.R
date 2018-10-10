@@ -52,6 +52,7 @@
 # Run m(n,W)
 
 #-------------------------------------- Pseudo code transformed to R for the dynamic program:
+"
 for (j in 0:W) {
   m[0,j] <- 0
 }
@@ -72,5 +73,5 @@ knapsack_dynamic <- function(x, W){
 
 }
 
-
+"
 
