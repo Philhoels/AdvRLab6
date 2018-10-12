@@ -76,6 +76,7 @@ brute_force_knapsack <- function(x,W, parallel = FALSE){
   return(bestCombinationList)
 }
 
+
 #set.seed(42)
 #n <- 2000
 #knapsack_objects <-
