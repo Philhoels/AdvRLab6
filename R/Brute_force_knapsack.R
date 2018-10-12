@@ -10,3 +10,11 @@
 #'
 #' @return list , returns a list that contain the maximum value and the list of elements chosen
 #' @export
+
+my_data <- knapsack_objects
+my_data
+
+brute_force_knapsack <- function(x, W){
+
+}
+
