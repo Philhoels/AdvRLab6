@@ -7,6 +7,7 @@ Maintainer: Phillip Hoelscher <phiho267@liu.se>
 Description: Knapsack problem gets solved by the greedy, dynamic and brute force search
 License: MIT License
 Encoding: UTF-8
+Depends: R (>= 3.1.0)
 LazyData: true
 RoxygenNote: 6.1.0
 VignetteBuilder: knitr
