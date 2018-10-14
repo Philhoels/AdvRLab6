@@ -10,8 +10,6 @@ brute_force_knapsack(x, W)
 \item{x}{Dataframe with variables v and w.}
 
 \item{W}{Integer as capacity.}
-
-\item{parallel}{Boolean makes function parallel}
 }
 \value{
 Returns a list with best value and combination.
