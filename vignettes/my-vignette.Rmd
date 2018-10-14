@@ -82,3 +82,50 @@ result
 
 ```
 
+
+**Greedy heuristic**
+
+```{r}
+greedy_knapsack <- function(x,W)
+{
+  #value per weight
+  vpw <- x[,2]/x[,1]
+  x$vpw <- vpw
+  #order
+  x <- x[order(x$vpw, decreasing = TRUE),]
+  weight <- W
+  sum <- 0
+  i <-1
+  elements <- c()
+  nrow <- nrow(x)
+  #sum value until reach the weight
+  for (i in 1:nrow)
+  {
+    if (x$w[i] < weight)
+      {
+    if (weight > 0)
+        {
+        weight <- weight - x$w[i]
+        sum <- sum + x$v[i]
+        elements <- c(elements, as.numeric(row.names(x)[i]))
+        }
+      } else  break()
+  }
+
+  output <- list(value = round(sum, 0), elements = elements)
+return(output)
+}
+
+```
+
+**Question**
+  How much time does it takes to run the algorithm for n = 1000000 objects?
+  
+```{r}
+
+ptm <- proc.time()
+greedy_knapsack(x = knapsack_objects[1:800,], W = 3500)
+result <- proc.time() - ptm
+result
+
+```
