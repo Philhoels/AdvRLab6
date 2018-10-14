@@ -1,10 +1,15 @@
 # 1.1.3 Dynamic Programming
 # knapsack_dynamic(x, W)
 # Roxygen2 documentation
+#' @title knapsack_dynamic
 #'
+#' @description a dynamic function to solve the knapsack problem
 #'
+#' @param x , the input data frame
+#' @param W , the knapsack size variable
 #'
-#'
+#' @return  #------------- need to add
+#' @export
 
 # pseudo code for the dynamic program - wikipedia
 # Input:
@@ -52,24 +57,59 @@
 # Run m(n,W)
 
 #-------------------------------------- Pseudo code transformed to R for the dynamic program:
-# for (j in 0:W) {
-#   m[0,j] <- 0
-# }
 #
-# for (i in 1:n) {
+# # The function - knapsack_dynamic(x, W)
+# knapsack_dynamic <- function(x, W){
+#   # for (j in 0:W) {
+#   #   x[0,j] <- 0
+#   # }
+#   # for (i in 1:n) {
+#   #   for (j in 0:W) {
+#   #     if(x$w [i] > j){
+#   #       x[i,j] <- x[i-1,j]
+#   #     } else{
+#   #       x[i,j] <- max(x[i-1,j], x[i-1, j- x$w[[i]]] + v[i])
+#   #     }
+#   #   }
+#   # }
+#   # return(x)
+#
 #   for (j in 0:W) {
-#     if(w[i] > j){
-#       m[i,j] <- m[i-1,j]
-#     } else{
-#       m[i,j] <- max(m[i-1,j], m[i-1,j-w[[i]]] + v[i])
+#     x[0,j] <- 0
+#   }
+#   for (i in 1:n) {
+#     for (j in 0:W) {
+#       if(w[i] > j){
+#         x[i,j] <- x[i-1, j]
+#       } else{
+#         x[i,j] <- max(x[i-1,j], x[i-1, j-w[i]] + v[i])
+#       }
 #     }
 #   }
 # }
 #
 #
-# # The function - knapsack_dynamic(x, W)
-# knapsack_dynamic <- function(x, W){
+# #-------------------------------------- TEST
+# knapsack_dynamic(x = knapsack_objects[1:8,], W = 3500)
+# knapsack_objects[1:8,]
 #
+#
+#
+# n <- c(0,1,2,3,4)
+# v <- c(10,40,30,50)
+# w <- c(5,4,6,3)
+# k <- 10
+# myfunction  <- function(i,k){
+#   if (i==0 || k==0){
+#     output <- 0
+#   } else if (length( w[i]) && w[i] > k) {
+#     output <- myfunction(i-1,w)
+#   } else {
+#     output <- max(v[i]+ myfunction(i-1, k-w[i]), myfunction(i-1,k))
+#   }
+#   return(output)
 # }
+#
+# myfunction(4,10)
 
 
