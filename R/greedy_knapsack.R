@@ -13,6 +13,9 @@
 
 greedy_knapsack <- function(x,W)
 {
+  if(W < 1){
+    stop("The argument W needs to be positive")
+  }
   #value per weight
   vpw <- x[,2]/x[,1]
   x$vpw <- vpw

@@ -10,6 +10,9 @@
 
 brute_force_knapsack <- function(x,W){
 
+  if(W < 1){
+    stop("The argument W needs to be positive")
+  }
   Combinations <- list() #creating a list of combnations
   for(i in 1:nrow(x)){
     Combinations[[i]] <- combn(rownames(x), i, paste, collapse = " ")
