@@ -41,8 +41,8 @@ greedy_knapsack <- function(x,W)
 return(output)
 }
 
-greedy_knapsack(x = knapsack_objects[1:800,], W = 3500)
-greedy_knapsack(x = knapsack_objects[1:1200,], W = 2000)
+# greedy_knapsack(x = knapsack_objects[1:800,], W = 3500)
+# greedy_knapsack(x = knapsack_objects[1:1200,], W = 2000)
 
 
 
