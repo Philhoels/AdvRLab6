@@ -1,0 +1,82 @@
+---
+title: "Lab 6"
+author: "Tejashree R Mastamardi Philip Hoelscher"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+In this package we are writing fast R code for Lab 6
+
+
+```{r message=FALSE, warning=FALSE}
+knapsack_objects <-
+  data.frame(
+    w=sample(1:4000, size = n, replace = TRUE),
+    v=runif(n = n, 0, 10000)
+  )
+
+```
+
+**Brute Force Search**
+
+```{r}
+brute_force_knapsack <- function(x,W){
+
+  Combinations <- list() #creating a list of combnations
+  for(i in 1:nrow(x)){
+    Combinations[[i]] <- combn(rownames(x), i, paste, collapse = " ")
+  }
+
+  Weights <- list() # creating a list of weights
+  for(i in 1:nrow(x)){
+    Weights[[i]] <- combn(x$w, i,sum)
+  }
+
+  Values <- list() # creating a list of values
+  for(i in 1:nrow(x)){
+    Values[[i]] <- combn(x$v, i,sum)
+  }
+
+  Combinations_vector <- unlist(Combinations) # creating vectors by unlisting
+  Weights_vector <- unlist(Weights)
+  Values_vector <- round(unlist(Values),0)
+
+  Capacity_weight <- which(Weights_vector < W) #using which to get the indexes of weight
+  validValues <- Values_vector[Capacity_weight]
+  maxValue <- max(validValues)
+
+  Value_Combinations <- which(Values_vector == maxValue) # using which to get the maximum Value
+  validCombination <- Combinations_vector[Value_Combinations]
+
+  best_combination <- list(value = maxValue, elements = validCombination) #creating a list
+  return(best_combination)
+}
+
+```
+
+**Question**
+  How much time does it takes to run the algorithm for n = 16 objects?
+  
+```{r message=FALSE, warning=FALSE}
+ptm <- proc.time()
+brute_force_knapsack(x = knapsack_objects[1:16,], W = 3500)
+result <- proc.time() - ptm
+result
+```
+
+
+**Dynamic Programming**
+
+```{r}
+
+```
+
+**Question**
+  How much time does it takes to run the algorithm for n = 500 objects?
+  
+```{r}
+
+```
