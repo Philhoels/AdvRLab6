@@ -3,7 +3,6 @@
 #'             It calculates best values and weights for given capacity.
 #'@param x Dataframe with variables v and w.
 #'@param W Integer as capacity.
-#'@param parallel Boolean makes function parallel
 #'@importFrom utils combn
 #'@export
 #'@return Returns a list with best value and combination.
