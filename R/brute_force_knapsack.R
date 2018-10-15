@@ -50,7 +50,7 @@ brute_force_knapsack <- function(x,W, parallel = TRUE){
   Value_Combinations <- which(Values_vector == maxValue) # using which to get the maximum Value
   validCombination <- Combinations_vector[Value_Combinations]
 
-  best_combination <- list(value = maxValue, elements = as.numeric(strsplit(validCombination, " ")[[1]])) #creating a list
+  best_combination <- list(value = maxValue, elements = as.numeric(validCombination) #creating a list
   }
    else{
    cores <- parallel::detectCores() - 1  #check the number of cores on the computer
@@ -79,7 +79,7 @@ brute_force_knapsack <- function(x,W, parallel = TRUE){
     Value_Combinations <- which(Values_vector == maxValue) # using which to get the maximum Value
     validCombination <- Combinations_vector[Value_Combinations]
 
-    best_combination <- list(value = maxValue, elements = as.numeric(strsplit(validCombination, " ")[[1]])) #creating a list
+    best_combination <- list(value = maxValue, elements = as.numeric(validCombination) #creating a list
     }
     return(best_combination)
 }
