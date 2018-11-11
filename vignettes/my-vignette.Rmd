@@ -1,6 +1,6 @@
 ---
-title: "Lab 6"
-author: "Tejashree R Mastamardi Philip Hoelscher"
+title: "Lab Report - 732A94 Advanced R Programming Computer lab 6"
+author: "Tejashree R Mastamardi & Phillip Hoelscher"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -8,109 +8,111 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
-In this package we are writing fast R code for Lab 6
 
-
-```{r message=FALSE, warning=FALSE}
-set.seed(42)
-n <- 2000
-knapsack_objects <-data.frame(
-  w=sample(1:4000, size = n, replace = TRUE),
-  v=runif(n = n, 0, 10000)
-)
-
+```{r, echo = FALSE, message = FALSE, warning=FALSE}
+library(profvis)
+library(parallel)
 ```
 
-**Brute Force Search**
+### 1.1.2 Brute force search
 
-```{r}
-brute_force_knapsack <- function(x,W){
+#####Question:
+- How much time does it takes to run the algorithm for n = 16 objects?
+```{r, echo=TRUE, eval=FALSE, message=FALSE, results='asis'}
+system.time(brute_force_knapsack(x = knapsack_objects[1:16,], W = 3500))
+```
+**Answer:**
+By using the dynamic_knapsack function, does the time for 16 objects be 3.589 seconds.
 
-  Combinations <- list() #creating a list of combnations
-  for(i in 1:nrow(x)){
-    Combinations[[i]] <- combn(rownames(x), i, paste, collapse = " ")
-  }
+### 1.1.3 Dynamic Programming
 
-  Weights <- list() # creating a list of weights
-  for(i in 1:nrow(x)){
-    Weights[[i]] <- combn(x$w, i,sum)
-  }
+#####Question:
+- How much time does it takes to run the algorithm for n = 500 objects?
+```{r, echo = TRUE, eval = FALSE, message = FALSE, results='asis'}
+system.time(dynamic_knapsack(x = knapsack_objects[1:500,], W = 3500))
+```
+**Answer:**
+By using the dynamic_knapsack function, does the time for 500 objects be 5.644 seconds.
 
-  Values <- list() # creating a list of values
-  for(i in 1:nrow(x)){
-    Values[[i]] <- combn(x$v, i,sum)
-  }
 
-  Combinations_vector <- unlist(Combinations) # creating vectors by unlisting
-  Weights_vector <- unlist(Weights)
-  Values_vector <- round(unlist(Values),0)
+### 1.1.4 Greedy heuristic
 
-  Capacity_weight <- which(Weights_vector < W) #using which to get the indexes of weight
-  validValues <- Values_vector[Capacity_weight]
-  maxValue <- max(validValues)
+#####Question:
+- How much time does it takes to run the algorithm for n = 1000000 objects?
+```{r, echo=TRUE, eval=FALSE, message=FALSE, results='asis'}
+system.time(greedy_knapsack(x = knapsack_objects[1:1000000,], W = 3500))
+```
+**Answer:**
+To run the algorithm, it takes for n = 1000000 objects 1.674 seconds. 
 
-  Value_Combinations <- which(Values_vector == maxValue) # using which to get the maximum Value
-  validCombination <- Combinations_vector[Value_Combinations]
+### 1.1.6 Profile your code and optimize your code
 
-  best_combination <- list(value = maxValue, elements = as.numeric(validCombination)) #creating a list
-  return(best_combination)
-}
-
+##### Question: 
+- What performance gain could you get by trying to improving your code?
+```
+> install.packages("lineprof")
+Warning in install.packages :
+  package ‘lineprof’ is not available (for R version 3.5.1)
 ```
 
-**Question**
-  How much time does it takes to run the algorithm for n = 16 objects?
-  
-```{r message=FALSE, warning=FALSE}
+It is **not possible** to install "lineprof", we used "profvis" instead.
 
-brute_force_knapsack(x = knapsack_objects[1:16,], W = 3500)
-result <- system.time(brute_force_knapsack(x = knapsack_objects[1:16,], W = 3500))
-result
-```
-
-
-**Greedy heuristic**
-
-```{r}
-greedy_knapsack <- function(x,W)
-{
-  #value per weight
-  vpw <- x[,2]/x[,1]
-  x$vpw <- vpw
-  #order
-  x <- x[order(x$vpw, decreasing = TRUE),]
-  weight <- W
-  sum <- 0
-  i <-1
-  elements <- c()
-  nrow <- nrow(x)
-  #sum value until reach the weight
-  for (i in 1:nrow)
+```{r, echo=TRUE, eval=FALSE, message=FALSE, results='asis'}
+op <- profvis::profvis(
   {
-    if (x$w[i] < weight)
+    # the greedy algorithm
+    if(W < 1){
+      stop("The argument W needs to be positive")
+    }
+    #value per weight
+    vpw <- x[,2]/x[,1]
+    x$vpw <- vpw
+    #order
+    x <- x[order(x$vpw, decreasing = TRUE),]
+    weight <- W
+    sum <- 0
+    i <-1
+    elements <- c()
+    nrow <- nrow(x)
+    #sum value until reach the weight
+    for (i in 1:nrow)
+    {
+      if (x$w[i] < weight)
       {
-    if (weight > 0)
+        if (weight > 0)
         {
-        weight <- weight - x$w[i]
-        sum <- sum + x$v[i]
-        elements <- c(elements, as.numeric(row.names(x)[i]))
+          weight <- weight - x$w[i]
+          sum <- sum + x$v[i]
+          elements <- c(elements, as.numeric(row.names(x)[i]))
         }
       } else  break()
-  }
+    }
 
-  output <- list(value = round(sum, 0), elements = elements)
-return(output)
-}
-
+    output <- list(value = round(sum, 0), elements = elements)
+    return(output)
+  })
 ```
+**Answer:**
+We can see most time consuming is the for loop, it takes 10ms.
+There are several techniques to improve the performance of the code. 
+For loops are always very time-consuming in R, in Hadly Wickham is in the chapter some techniques listed. For example to vectorize or parallelize (which we used to speed up the Brute force search) the code. But the most matching techniques to improve the speed would be to write this part of the function in C++.
 
-**Question**
-  How much time does it takes to run the algorithm for n = 1000000 objects?
-  
+
+### 1.1.8 (*) Parallelize brute force search
+
+#####Question: 
+- What performance gain could you get by parallelizing brute force search?
+```{r, echo=TRUE, eval=FALSE, message=FALSE, results='asis'}
+system.time(brute_force_knapsack(x = knapsack_objects[1:16,], W = 3500, parallel = TRUE))
+```
+**Answer:**
 ```{r}
-
-greedy_knapsack(x = knapsack_objects[1:1000000,], W = 3500)
-result <- system.time(greedy_knapsack(x = knapsack_objects[1:1000000,], W = 3500))
-result
-
+## time dynamic_knapsack function 3.589
+## time dynamic_knapsack parallel function 3.381
+3.589 - 3.381
 ```
+By using the dynamic_knapsack function parallel, does the time for 16 objects be 3.381 seconds.
+We checked the parallized dynamic_knapsack function parallel on n = 16 objects, like in the first question 1.1.2 of the Brute force search.
+We could gane a time reduce of 0.208 seconds. 
+
+
