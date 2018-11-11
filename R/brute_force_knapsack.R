@@ -47,8 +47,12 @@ brute_force_knapsack <- function(x,W, parallel = TRUE){
   }
   else{
     cores <- parallel::detectCores() - 1  #check the number of cores on the computer
-    cluster <- makeCluster(cores) #to set up the cluster
-    clusterExport(cluster, c("x"), envir = environment())
+    cluster <- parallel::makeCluster(cores) #to set up the cluster
+    #clusterExport(cluster, c("x"), envir = environment())
+
+    clusterEvalQ(cluster, {
+      library(parallel)
+    })
 
     Combinations <- parLapplyLB(cluster, 1:nrow(x), fun =  function(y) {
       combn(rownames(x) , y , paste, collapse = "")
